@@ -1,6 +1,3 @@
-import '@material/web/icon/icon';
-import '@material/web/list/list';
-import '@material/web/list/list-item';
 import { Component, Host, h } from '@stencil/core';
 
 
