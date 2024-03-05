@@ -1,5 +1,4 @@
-import { Component, Host, h } from '@stencil/core';
-
+import { Component, Event, EventEmitter, Host, h } from '@stencil/core';
 
 @Component({
   tag: 'dsc-ambulance-wl-list',
@@ -7,32 +6,33 @@ import { Component, Host, h } from '@stencil/core';
   shadow: true,
 })
 export class DscAmbulanceWlList {
+  @Event({ eventName: "entry-clicked" }) entryClicked: EventEmitter<string>;
 
   waitingPatients: any[];
 
-  private async getWaitingPatientsAsync(){
+  private async getWaitingPatientsAsync() {
     return await Promise.resolve(
       [{
-          name: 'Testovací zmenený pacient',
-          patientId: '10001',
-          since: new Date(Date.now() - 10 * 60).toISOString(),
-          estimatedStart: new Date(Date.now() + 65 * 60).toISOString(),
-          estimatedDurationMinutes: 15,
-          condition: 'Kontrola'
+        name: 'Testovací zmenený pacient',
+        patientId: '10001',
+        since: new Date(Date.now() - 10 * 60).toISOString(),
+        estimatedStart: new Date(Date.now() + 65 * 60).toISOString(),
+        estimatedDurationMinutes: 15,
+        condition: 'Kontrola'
       }, {
-          name: 'Bc. August Cézar',
-          patientId: '10096',
-          since: new Date(Date.now() - 30 * 60).toISOString(),
-          estimatedStart: new Date(Date.now() + 30 * 60).toISOString(),
-          estimatedDurationMinutes: 20,
-          condition: 'Teploty'
+        name: 'Bc. August Cézar',
+        patientId: '10096',
+        since: new Date(Date.now() - 30 * 60).toISOString(),
+        estimatedStart: new Date(Date.now() + 30 * 60).toISOString(),
+        estimatedDurationMinutes: 20,
+        condition: 'Teploty'
       }, {
-          name: 'Ing. Ferdinand Trety',
-          patientId: '10028',
-          since: new Date(Date.now() - 72 * 60).toISOString(),
-          estimatedStart: new Date(Date.now() + 5 * 60).toISOString(),
-          estimatedDurationMinutes: 15,
-          condition: 'Bolesti hrdla'
+        name: 'Ing. Ferdinand Trety',
+        patientId: '10028',
+        since: new Date(Date.now() - 72 * 60).toISOString(),
+        estimatedStart: new Date(Date.now() + 5 * 60).toISOString(),
+        estimatedDurationMinutes: 15,
+        condition: 'Bolesti hrdla'
       }]
     );
   }
@@ -45,11 +45,11 @@ export class DscAmbulanceWlList {
     return (
       <Host>
         <md-list>
-          {this.waitingPatients.map(patient =>
-            <md-list-item key={patient.patientId}>
+          {this.waitingPatients.map((patient, index) =>
+            <md-list-item key={patient.id} onClick={() => this.entryClicked.emit(index.toString())}>
               <div slot="headline">{patient.name}</div>
               <div slot="supporting-text">{"Predpokladaný vstup: " + this.isoDateToLocale(patient.estimatedStart)}</div>
-                <md-icon slot="start">person</md-icon>
+              <md-icon slot="start">person</md-icon>
             </md-list-item>
           )}
         </md-list>
@@ -57,8 +57,8 @@ export class DscAmbulanceWlList {
     );
   }
 
-  private isoDateToLocale(iso:string) {
-    if(!iso) return '';
+  private isoDateToLocale(iso: string) {
+    if (!iso) return '';
     return new Date(Date.parse(iso)).toLocaleTimeString()
   }
 
