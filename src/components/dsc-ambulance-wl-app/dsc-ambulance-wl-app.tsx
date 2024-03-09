@@ -54,6 +54,7 @@ export class DscAmbulanceWlApp {
       <Host>
         {element === "editor"
           ? <dsc-ambulance-wl-editor entry-id={entryId}
+            ambulance-id={this.ambulanceId} api-base={this.apiBase}
             oneditor-closed={() => navigate("./list")} >
           </dsc-ambulance-wl-editor>
           : <dsc-ambulance-wl-list ambulance-id={this.ambulanceId} api-base={this.apiBase} onentry-clicked={(ev: CustomEvent<string>) => navigate("./entry/" + ev.detail)} >
